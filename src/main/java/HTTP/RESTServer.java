@@ -3,7 +3,6 @@ package HTTP;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-import lombok.AllArgsConstructor;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -20,26 +19,28 @@ public class RESTServer {
 
         RESTHttpHandler(RESTHandler restHandler) {
             handlers = new HashMap<>();
-            handlers.put(GET, restHandler::HandleGET);
-            handlers.put(POST, restHandler::HandlePOST);
-            handlers.put(PUT, restHandler::HandlePUT);
-            handlers.put(PATCH, restHandler::HandlePATCH);
-            handlers.put(DELETE, restHandler::HandleDELETE);
+            handlers.put(GET, restHandler::handleGET);
+            handlers.put(POST, restHandler::handlePOST);
+            handlers.put(PUT, restHandler::handlePUT);
+            handlers.put(PATCH, restHandler::handlePATCH);
+            handlers.put(DELETE, restHandler::handleDELETE);
         }
 
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             var handler = handlers.get(exchange.getRequestMethod());
+            RESTResponse response;
             if(handler != null) {
-                RESTResponse response = handler.apply(exchange);
-                exchange.sendResponseHeaders(response.getCode(), response.getResponseBody().getBytes().length);
-                OutputStream outputStream = exchange.getResponseBody();
-                outputStream.write(response.getResponseBody().getBytes());
-                outputStream.flush();
+                response = handler.apply(exchange);
+
             } else {
-                //CHANGE
-                exchange.sendResponseHeaders(405, -1);
+                response = RESTHandler.BAD_METHOD;
             }
+            exchange.sendResponseHeaders(response.getCode(), response.getResponseBody().getBytes().length);
+            OutputStream outputStream = exchange.getResponseBody();
+            outputStream.write(response.getResponseBody().getBytes());
+            outputStream.flush();
+
             exchange.close();
         }
     }

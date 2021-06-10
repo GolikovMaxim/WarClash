@@ -2,10 +2,14 @@ package HTTP;
 
 import com.sun.net.httpserver.HttpExchange;
 
+import java.net.HttpURLConnection;
+
 public interface RESTHandler {
-    RESTResponse HandleGET(HttpExchange exchange);
-    RESTResponse HandlePOST(HttpExchange exchange);
-    RESTResponse HandlePUT(HttpExchange exchange);
-    RESTResponse HandlePATCH(HttpExchange exchange);
-    RESTResponse HandleDELETE(HttpExchange exchange);
+    RESTResponse BAD_METHOD = new RESTResponse(HttpURLConnection.HTTP_BAD_METHOD, "Method not Allowed");
+
+    RESTResponse handleGET(HttpExchange exchange);
+    RESTResponse handlePOST(HttpExchange exchange);
+    RESTResponse handlePUT(HttpExchange exchange);
+    RESTResponse handlePATCH(HttpExchange exchange);
+    RESTResponse handleDELETE(HttpExchange exchange);
 }

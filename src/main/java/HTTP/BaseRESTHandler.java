@@ -4,27 +4,27 @@ import com.sun.net.httpserver.HttpExchange;
 
 public class BaseRESTHandler implements RESTHandler {
     @Override
-    public RESTResponse HandleGET(HttpExchange exchange) {
-        return new RESTResponse(405, "Method not Allowed");
+    public RESTResponse handleGET(HttpExchange exchange) {
+        return RESTHandler.BAD_METHOD;
     }
 
     @Override
-    public RESTResponse HandlePOST(HttpExchange exchange) {
-        return new RESTResponse(405, "Method not Allowed");
+    public RESTResponse handlePOST(HttpExchange exchange) {
+        return RESTHandler.BAD_METHOD;
     }
 
     @Override
-    public RESTResponse HandlePUT(HttpExchange exchange) {
-        return new RESTResponse(405, "Method not Allowed");
+    public RESTResponse handlePUT(HttpExchange exchange) {
+        return RESTHandler.BAD_METHOD;
     }
 
     @Override
-    public RESTResponse HandlePATCH(HttpExchange exchange) {
-        return new RESTResponse(405, "Method not Allowed");
+    public RESTResponse handlePATCH(HttpExchange exchange) {
+        return RESTHandler.BAD_METHOD;
     }
 
     @Override
-    public RESTResponse HandleDELETE(HttpExchange exchange) {
-        return new RESTResponse(405, "Method not Allowed");
+    public RESTResponse handleDELETE(HttpExchange exchange) {
+        return RESTHandler.BAD_METHOD;
     }
 }

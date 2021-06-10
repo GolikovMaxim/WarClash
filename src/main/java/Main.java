@@ -11,22 +11,22 @@ public class Main {
 
         restServer.addEndPoint("/bek", new BaseRESTHandler() {
             @Override
-            public RESTResponse HandleGET(HttpExchange exchange) {
+            public RESTResponse handleGET(HttpExchange exchange) {
                 return new RESTResponse(200, "GET BEK");
             }
 
             @Override
-            public RESTResponse HandlePOST(HttpExchange exchange) {
+            public RESTResponse handlePOST(HttpExchange exchange) {
                 return new RESTResponse(200, "POST BEK");
             }
 
             @Override
-            public RESTResponse HandlePUT(HttpExchange exchange) {
+            public RESTResponse handlePUT(HttpExchange exchange) {
                 return new RESTResponse(200, "PUT BEK");
             }
 
             @Override
-            public RESTResponse HandlePATCH(HttpExchange exchange) {
+            public RESTResponse handlePATCH(HttpExchange exchange) {
                 return new RESTResponse(200, "PATCH BEK");
             }
         });
