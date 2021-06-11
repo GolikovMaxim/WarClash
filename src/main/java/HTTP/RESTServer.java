@@ -28,8 +28,9 @@ public class RESTServer {
 
         @Override
         public void handle(HttpExchange exchange) throws IOException {
-            var handler = handlers.get(exchange.getRequestMethod());
             RESTResponse response;
+            var handler = handlers.get(exchange.getRequestMethod());
+
             if(handler != null) {
                 response = handler.apply(exchange);
 

@@ -1,6 +1,9 @@
+import HTTP.Authentication.JWTRESTDecorator;
 import HTTP.BaseRESTHandler;
 import HTTP.RESTResponse;
 import HTTP.RESTServer;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
@@ -9,7 +12,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         RESTServer restServer = new RESTServer(8000);
 
-        restServer.addEndPoint("/bek", new BaseRESTHandler() {
+        BaseRESTHandler bekRESTHandler = new BaseRESTHandler() {
             @Override
             public RESTResponse handleGET(HttpExchange exchange) {
                 return new RESTResponse(200, "GET BEK");
@@ -29,8 +32,12 @@ public class Main {
             public RESTResponse handlePATCH(HttpExchange exchange) {
                 return new RESTResponse(200, "PATCH BEK");
             }
-        });
+        };
+        restServer.addEndPoint("/bek", new JWTRESTDecorator(bekRESTHandler));
 
         restServer.start();
+        System.out.println("Server started");
+
+        System.out.println(JWT.create().withSubject("warclash").withKeyId("111").sign(Algorithm.HMAC256(JWTRESTDecorator.SECRET_KEY)));
     }
 }

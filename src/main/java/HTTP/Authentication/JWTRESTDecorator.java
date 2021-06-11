@@ -12,8 +12,10 @@ import java.net.HttpURLConnection;
 import java.util.function.Function;
 
 public class JWTRESTDecorator implements RESTHandler {
-    private static final String SECRET_KEY = "secret_for_WarClash";
+    private static final String HEADER_AUTHENTICATION = "Authorization";
     private static final RESTResponse AUTHENTICATION_ERROR_RESPONSE = new RESTResponse(HttpURLConnection.HTTP_UNAUTHORIZED, "Authentication error");
+
+    public static final String SECRET_KEY = "secret_for_WarClash";
 
     private RESTHandler restHandler;
     private JWTVerifier jwtVerifier;
@@ -25,10 +27,18 @@ public class JWTRESTDecorator implements RESTHandler {
 
     protected RESTResponse handleWithTokenVerification(HttpExchange exchange, Function<HttpExchange, RESTResponse> handler) {
         try {
-            var tokenString = exchange.getRequestHeaders().get("Authentication");
-            jwtVerifier.verify(tokenString.get(0));
-            return handler.apply(exchange);
+            if(exchange.getRequestHeaders().containsKey(HEADER_AUTHENTICATION)) {
+                var tokenString = exchange.getRequestHeaders().get(HEADER_AUTHENTICATION);
+                var token = jwtVerifier.verify(tokenString.get(0));
+
+                var response = handler.apply(exchange);
+                response.setResponseBody(response.getResponseBody() + "\ngot token: " + token.getSubject() + " " + token.getKeyId());
+                return response;
+            } else {
+                return AUTHENTICATION_ERROR_RESPONSE;
+            }
         } catch(JWTVerificationException jwte) {
+            jwte.printStackTrace();
             return AUTHENTICATION_ERROR_RESPONSE;
         }
     }
