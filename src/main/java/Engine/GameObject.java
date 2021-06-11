@@ -46,8 +46,13 @@ public class GameObject {
     }
 
     public <T extends Component> void removeComponent(Class<T> componentType) {
+        T obj = getComponent(componentType);
+        if(obj == null) {
+            return;
+        }
+
         Class type = componentType;
-        while(!type.equals(Component.class)) {
+        while(!type.equals(Component.class) && getComponent(type) == obj) {
             components.remove(type);
             type = type.getSuperclass();
         }

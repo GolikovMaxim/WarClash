@@ -1,3 +1,4 @@
+import Engine.Component;
 import HTTP.Authentication.JWTRESTDecorator;
 import HTTP.BaseRESTHandler;
 import HTTP.RESTResponse;

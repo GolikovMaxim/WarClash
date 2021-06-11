@@ -1,14 +1,7 @@
 package Engine;
 
-import lombok.Getter;
-
-@Getter
 public abstract class Component {
     GameObject gameObject;
-
-    Component() {
-
-    }
 
     public void start() {
 
@@ -20,5 +13,9 @@ public abstract class Component {
 
     public  void onDestroy() {
 
+    }
+
+    public final GameObject getGameObject() {
+        return gameObject;
     }
 }
