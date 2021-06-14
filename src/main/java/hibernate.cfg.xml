@@ -6,7 +6,7 @@
     <session-factory>
         <property name="connection.url">jdbc:mysql://localhost:3306</property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        <mapping class="WarClash.User"/>
+        <mapping class="WarClash.Model.Entity.WarClashUser"/>
         <!-- <property name="connection.username"/> -->
         <!-- <property name="connection.password"/> -->
 
