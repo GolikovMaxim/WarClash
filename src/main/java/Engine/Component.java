@@ -1,17 +1,17 @@
 package Engine;
 
-public abstract class Component {
+public abstract class Component implements ComponentBehaviour {
     GameObject gameObject;
 
     public void start() {
 
     }
 
-    public  void update() {
+    public void update() {
 
     }
 
-    public  void onDestroy() {
+    public void onDestroy() {
 
     }
 

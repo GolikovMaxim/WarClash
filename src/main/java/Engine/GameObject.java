@@ -1,24 +1,29 @@
 package Engine;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class GameObject {
-    public static class HasSuchComponentException extends RuntimeException {
+public final class GameObject implements ComponentBehaviour {
+    private static class HasSuchComponentException extends RuntimeException {
         HasSuchComponentException(Class componentType) {
             super(componentType.getName());
         }
     }
 
-    Map<Class, Component> components = new HashMap<>();
+    Map<Class, List<Component>> components = new HashMap<>();
+    private List<Component> componentList = new ArrayList<>();
     @Getter @Setter private String name;
     @Getter private Transform transform;
+    @Getter @Setter(AccessLevel.PACKAGE) private Scene scene;
 
-    public GameObject(String name) {
+    GameObject(String name) {
         this.name = name;
         transform = addComponent(Transform.class);
     }
@@ -34,28 +39,53 @@ public class GameObject {
 
         Class type = componentType;
         while(!type.equals(Component.class)) {
-            components.put(type, component);
+            var list = components.computeIfAbsent(type, c -> new ArrayList<>());
+            list.add(component);
             type = type.getSuperclass();
         }
+
+        componentList.add(component);
+        component.start();
 
         return component;
     }
 
     public <T extends Component> T getComponent(Class<T> componentType) {
-        return (T)components.get(componentType);
+        return (T)components.get(componentType).get(0);
     }
 
     public <T extends Component> void removeComponent(Class<T> componentType) {
-        T obj = getComponent(componentType);
-        if(obj == null) {
+        var component = getComponent(componentType);
+        if(component == null) {
             return;
         }
 
         Class type = componentType;
-        while(!type.equals(Component.class) && getComponent(type) == obj) {
-            components.remove(type);
+        while(!type.equals(Component.class) && getComponent(type) == component) {
+            components.get(type).remove(component);
             type = type.getSuperclass();
         }
+
+        componentList.remove(component);
+        component.onDestroy();
+    }
+
+    @Override
+    public void start() {
+        componentList.forEach(component -> component.start());
+    }
+
+    @Override
+    public void update() {
+        componentList.forEach(component -> component.update());
+    }
+
+    @Override
+    public void onDestroy() {
+        componentList.forEach(component -> component.onDestroy());
+
+        componentList.clear();
+        components.clear();
     }
 
     @Override

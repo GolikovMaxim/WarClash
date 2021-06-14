@@ -10,8 +10,8 @@ import java.util.List;
 @Getter
 public class Transform extends Component {
     public static class HasSuchTransformChildException extends RuntimeException {
-        HasSuchTransformChildException(Transform transform) {
-            super("Has such transform as child: " + transform.gameObject.toString());
+        HasSuchTransformChildException(Transform parent, Transform child) {
+            super("Transform " + parent.gameObject.toString() + " has such transform as child: " + child.gameObject.toString());
         }
     }
 
@@ -27,11 +27,24 @@ public class Transform extends Component {
 
     public void addChild(Transform transform) {
         if(children.contains(transform)) {
-            throw new HasSuchTransformChildException(transform);
+            throw new HasSuchTransformChildException(this, transform);
         }
 
         children.add(transform);
         transform.parent = this;
+    }
+
+    public void removeChild(Transform transform) {
+        if(!children.contains(transform)) {
+            return;
+        }
+
+        children.remove(transform);
+        transform.parent = null;
+    }
+
+    public void setParent(Transform transform) {
+        transform.addChild(this);
     }
 
     public Vector3 getGlobalPosition() {
