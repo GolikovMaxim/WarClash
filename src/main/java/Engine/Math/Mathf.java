@@ -1,6 +1,8 @@
 package Engine.Math;
 
 public final class Mathf {
+    public static final float PI = 3.1415926535897932384626f, PI_2 = PI / 2, RAD2DEG = 180f / PI, DEG2RAD = 1 / RAD2DEG, FLOAT_ERROR = 1e-6f;
+
     public static float lerp(float a, float b, float t) {
         t = clamp01(t);
         return lerpUnclamped(a, b, t);

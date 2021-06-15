@@ -1,5 +1,6 @@
 package Engine;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,14 +10,14 @@ import java.util.*;
 public class Engine {
     public static final int FIXED_DELTA_TIME = 50;
 
-    @Getter @Setter @AllArgsConstructor
-    private static class GameTaskInfo {
+    @Getter @Setter(AccessLevel.PRIVATE) @AllArgsConstructor
+    public static class GameTaskInfo {
         private Timer timer;
         private Scene scene;
         private UUID uuid;
     }
 
-    private Map<UUID, GameTaskInfo> games = new HashMap<>();
+    @Getter private Map<UUID, GameTaskInfo> games = new HashMap<>();
 
     public void createGame(UUID uuid) {
         var timer = new Timer();

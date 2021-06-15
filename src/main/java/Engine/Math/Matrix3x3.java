@@ -8,6 +8,13 @@ public class Matrix3x3 {
         AXIS_X, AXIS_Y, AXIS_Z
     }
 
+    public static Matrix3x3 one = new Matrix3x3();
+    static {
+        one.data[0][0] = 1;
+        one.data[1][1] = 1;
+        one.data[2][2] = 1;
+    }
+
     private float[][] data;
 
     public Matrix3x3() {
@@ -78,6 +85,10 @@ public class Matrix3x3 {
         data = new Matrix3x3(RotationAxis.AXIS_X, eulerAngles.getX()).
                 mul(new Matrix3x3(RotationAxis.AXIS_Y, eulerAngles.getY())).
                 mul(new Matrix3x3(RotationAxis.AXIS_Z, eulerAngles.getZ())).getData();
+
+        /*data = new Matrix3x3(Vector3.right, eulerAngles.getX()).
+                mul(new Matrix3x3(Vector3.up, eulerAngles.getY())).
+                mul(new Matrix3x3(Vector3.forward, eulerAngles.getZ())).getData();*/
     }
 
     public static Matrix3x3 add(Matrix3x3 a, Matrix3x3 b) {
@@ -132,6 +143,18 @@ public class Matrix3x3 {
         return res;
     }
 
+    public static Matrix3x3 transpose(Matrix3x3 a) {
+        var res = new Matrix3x3();
+
+        for(int i = 0; i < 3; i++) {
+            for(int j = 0; j < 3; j++) {
+                res.data[i][j] = a.data[j][i];
+            }
+        }
+
+        return res;
+    }
+
     public Matrix3x3 add(Matrix3x3 a) {
         for(int i = 0; i < 3; i++) {
             for(int j = 0; j < 3; j++) {
@@ -156,5 +179,17 @@ public class Matrix3x3 {
 
     public Vector3 mul(Vector3 a) {
         return mul(this, a);
+    }
+
+    public Matrix3x3 transposed() {
+        return transpose(this);
+    }
+
+    @Override
+    public String toString() {
+        return "Matrix 3x3: \n" +
+                data[0][0] + " " + data[0][1] + " " + data[0][2] + "\n" +
+                data[1][0] + " " + data[1][1] + " " + data[1][2] + "\n" +
+                data[2][0] + " " + data[2][1] + " " + data[2][2];
     }
 }

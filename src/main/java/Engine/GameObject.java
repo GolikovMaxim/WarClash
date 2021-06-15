@@ -54,6 +54,10 @@ public final class GameObject implements ComponentBehaviour {
         return (T)components.get(componentType).get(0);
     }
 
+    public <T extends Component> List<T> getComponents(Class<T> componentType) {
+        return (List<T>)components.get(componentType);
+    }
+
     public <T extends Component> void removeComponent(Class<T> componentType) {
         var component = getComponent(componentType);
         if(component == null) {
