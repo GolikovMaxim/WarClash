@@ -23,7 +23,7 @@ public final class GameObject implements ComponentBehaviour {
     @Getter private Transform transform;
     @Getter @Setter(AccessLevel.PACKAGE) private Scene scene;
 
-    GameObject(String name) {
+    public GameObject(String name) {
         this.name = name;
         transform = addComponent(Transform.class);
     }
@@ -51,7 +51,10 @@ public final class GameObject implements ComponentBehaviour {
     }
 
     public <T extends Component> T getComponent(Class<T> componentType) {
-        return (T)components.get(componentType).get(0);
+        if(components.get(componentType) != null) {
+            return (T)components.get(componentType).get(0);
+        }
+        return null;
     }
 
     public <T extends Component> List<T> getComponents(Class<T> componentType) {

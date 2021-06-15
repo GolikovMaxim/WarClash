@@ -52,19 +52,19 @@ public class Transform extends Component {
     }
 
     public void setLocalPosition(Vector3 p) {
-        localPosition = p;
+        localPosition = new Vector3(p);
     }
 
     public void setLocalRotation(Vector3 r) {
-        localRotation = r;
+        localRotation = new Vector3(r);
         rotationMatrix = new Matrix3x3(r);
     }
 
     public Vector3 getGlobalPosition() {
-        var position = localPosition.clone();
+        var position = localPosition;
         var par = getParent();
         while(par != null) {
-            position = Vector3.add(par.rotationMatrix.mul(position), par.localPosition);
+            position = par.rotationMatrix.mul(position).add(par.localPosition);
             par = par.parent;
         }
 

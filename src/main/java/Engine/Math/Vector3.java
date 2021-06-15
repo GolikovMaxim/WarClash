@@ -23,6 +23,10 @@ public class Vector3 {
         x = y = z = 0;
     }
 
+    public Vector3(Vector3 v) {
+        this(v.x, v.y, v.z);
+    }
+
     public Vector3(float x, float y, float z) {
         this.x = x;
         this.y = y;
@@ -113,66 +117,39 @@ public class Vector3 {
 
     //Non-static methods
     public Vector3 add(Vector3 a) {
-        x += a.x;
-        y += a.y;
-        z += a.z;
-        return this;
+        return add(this, a);
     }
 
     public Vector3 sub(Vector3 a) {
-        x -= a.x;
-        y -= a.y;
-        z -= a.z;
-        return this;
+        return sub(this, a);
     }
 
     public Vector3 mul(Vector3 a) {
-        x *= a.x;
-        y *= a.y;
-        z *= a.z;
-        return this;
+        return mul(this, a);
     }
 
     public Vector3 div(Vector3 a) {
-        x /= a.x;
-        y /= a.y;
-        z /= a.z;
-        return this;
+        return div(this, a);
     }
 
     public Vector3 add(float a) {
-        x += a;
-        y += a;
-        z += a;
-        return this;
+        return add(this, a);
     }
 
     public Vector3 sub(float a) {
-        x -= a;
-        y -= a;
-        z -= a;
-        return this;
+        return sub(this, a);
     }
 
     public Vector3 mul(float a) {
-        x *= a;
-        y *= a;
-        z *= a;
-        return this;
+        return mul(this, a);
     }
 
     public Vector3 div(float a) {
-        x /= a;
-        y /= a;
-        z /= a;
-        return this;
+        return div(this, a);
     }
 
     public Vector3 neg() {
-        x *= -1;
-        y *= -1;
-        z *= -1;
-        return this;
+        return neg(this);
     }
 
     public float magnitude() {
@@ -181,11 +158,6 @@ public class Vector3 {
 
     public Vector3 normalized() {
         return normalize(this);
-    }
-
-    @SneakyThrows @Override
-    public Vector3 clone() {
-        return new Vector3(x, y, z);
     }
 
     @Override

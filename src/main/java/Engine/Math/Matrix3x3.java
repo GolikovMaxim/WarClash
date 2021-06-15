@@ -82,9 +82,9 @@ public class Matrix3x3 {
     }
 
     public Matrix3x3(Vector3 eulerAngles) {
-        data = new Matrix3x3(RotationAxis.AXIS_X, eulerAngles.getX()).
+        data = new Matrix3x3(RotationAxis.AXIS_Z, eulerAngles.getZ()).
                 mul(new Matrix3x3(RotationAxis.AXIS_Y, eulerAngles.getY())).
-                mul(new Matrix3x3(RotationAxis.AXIS_Z, eulerAngles.getZ())).getData();
+                mul(new Matrix3x3(RotationAxis.AXIS_X, eulerAngles.getX())).getData();
 
         /*data = new Matrix3x3(Vector3.right, eulerAngles.getX()).
                 mul(new Matrix3x3(Vector3.up, eulerAngles.getY())).
